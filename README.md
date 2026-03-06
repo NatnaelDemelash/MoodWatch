@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 MoodWatch
 
-## Getting Started
+> Movies for every mood.
 
-First, run the development server:
+MoodWatch is an AI-powered movie recommendation app. Pick how you're feeling, optionally describe your vibe, and get 5 movie recommendations tailored to your mood
+
+---
+
+## ✨ Features
+
+- 8 mood cards to match how you're feeling
+- Optional free-text input to give Claude more context
+- AI-generated movie recommendations via Claude API
+- Real movie posters and data via TMDB API
+- Dark mode toggle
+- Fully responsive
+
+---
+
+## 🛠 Tech Stack
+
+- [Next.js](https://nextjs.org/) — React framework
+- [TypeScript](https://www.typescriptlang.org/) — Type safety
+- [Tailwind CSS](https://tailwindcss.com/) — Styling
+- [shadcn/ui](https://ui.shadcn.com/) — UI components
+- [Claude API](https://www.anthropic.com/) — Mood to movie matching
+- [TMDB API](https://www.themoviedb.org/) — Movie data and posters
+- [Vercel](https://vercel.com/) — Deployment
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/yourusername/moodwatch.git
+cd moodwatch
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+Create a `.env.local` file in the root:
+
+```env
+ANTHROPIC_API_KEY=your_claude_api_key
+TMDB_API_KEY=your_tmdb_api_key
+```
+
+### 4. Run the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
