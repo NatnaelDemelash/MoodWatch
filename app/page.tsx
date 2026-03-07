@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "./components/Navbar";
 
 import {
@@ -10,6 +12,7 @@ import {
   Rocket,
   Sparkles,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const moods = [
@@ -23,8 +26,14 @@ export default function Home() {
     { icon: Orbit, label: "Weird" },
   ];
 
+  const router = useRouter();
+
+  const onSelecteMood = (mood: String) => {
+    router.push(`/details?mood=${mood}`);
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-b from-neutral-50 via-white to-neutral-100">
+    <div className="min-h-screen bg-linear-to-b from-neutral-100 via-white to-neutral-300">
       <Navbar />
 
       <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
@@ -34,7 +43,7 @@ export default function Home() {
               Mood-based movie picker
             </div>
 
-            <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
+            <h1 className="text-3xl  tracking-tight text-neutral-900 sm:text-4xl">
               Find a film that matches your mood
             </h1>
 
@@ -52,6 +61,7 @@ export default function Home() {
                 <button
                   key={mood.label}
                   className="group flex flex-col items-center justify-center rounded-xl border border-neutral-200 bg-white px-2 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-md"
+                  onClick={() => onSelecteMood(mood.label)}
                 >
                   <div className="mb-1.5 flex h-11 w-11 items-center justify-center rounded-full bg-neutral-100">
                     <Icon className="h-4 w-4" strokeWidth={2} />

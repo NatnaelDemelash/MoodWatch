@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="mx-auto max-w-2xl px-4 pt-2">
-      <Card className="rounded-lg border border-neutral-200 bg-white shadow-sm">
+    <header className="mx-auto max-w-2xl px-4 pt-8">
+      <Card className="rounded-lg border border-neutral-200 bg-gray-50 shadow-sm">
         <div className="flex items-center justify-between px-3 py-1">
           <Link
             href="/"
