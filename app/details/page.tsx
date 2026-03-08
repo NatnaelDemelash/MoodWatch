@@ -1,24 +1,28 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Detail() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const mood = searchParams.get("mood");
-  const [moodDescribe, setMoodDescribe] = useState("");
+  const mood = searchParams.get('mood');
+  const [moodDescribe, setMoodDescribe] = useState('');
 
   const handleSubmit = async () => {
-    const res = await fetch("/api/recommend", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetch('/api/recommend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ mood: mood, description: moodDescribe }),
     });
     const data = await res.json();
-    console.log(data);
+    localStorage.setItem(
+      'recommendations',
+      JSON.stringify(data.recommendations),
+    );
+    router.push('/result');
   };
 
   return (
@@ -27,7 +31,7 @@ export default function Detail() {
         <Button
           variant="ghost"
           className="self-start flex items-center gap-2 cursor-pointer"
-          onClick={() => router.push("/")}
+          onClick={() => router.push('/')}
         >
           <ArrowLeft className="size-4" />
           Back to Select Mood
@@ -35,7 +39,7 @@ export default function Detail() {
 
         <div className="text-center space-y-2">
           <p className="text-sm text-gray-500">
-            Selected mood:{" "}
+            Selected mood:{' '}
             <span className="font-medium text-gray-700">{mood}</span>
           </p>
 
