@@ -3,11 +3,23 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Detail() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mood = searchParams.get("mood");
+  const [moodDescribe, setMoodDescribe] = useState("");
+
+  const handleSubmit = async () => {
+    const res = await fetch("/api/recommend", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mood: mood, description: moodDescribe }),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <section className="bg-gray-100 min-h-screen flex items-center">
@@ -33,13 +45,18 @@ export default function Detail() {
         </div>
 
         <textarea
+          value={moodDescribe}
+          onChange={(e) => setMoodDescribe(e.target.value)}
           placeholder="Write about what’s making you feel this way..."
           className="w-full h-44 p-4 rounded-xl border-2 border-gray-300 bg-gray-100
           focus:outline-none focus:ring-2 focus:ring-black/10
           shadow-sm resize-none text-sm leading-relaxed"
         />
 
-        <Button className="w-1/2 mx-auto bg-[#333] hover:bg-[#222] cursor-pointer">
+        <Button
+          className="w-1/2 mx-auto bg-[#333] hover:bg-[#222] cursor-pointer"
+          onClick={handleSubmit}
+        >
           Find My Films <ArrowRight />
         </Button>
       </div>
