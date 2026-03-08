@@ -1,6 +1,11 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Route } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 export default function Result() {
+  const route = useRouter();
   const recommendations = JSON.parse(
     localStorage.getItem('recommendations') || '[]',
   );
@@ -18,6 +23,17 @@ export default function Result() {
           </p>
         </div>
 
+        {recommendations.length !== 0 && (
+          <div className="flex justify-end">
+            <Button
+              onClick={() => route.push('/')}
+              className="mb-6 text-xs px-4 py-2 cursor-pointer"
+              size="xs"
+            >
+              <ArrowLeft /> Select Another Mood
+            </Button>
+          </div>
+        )}
         <div className="space-y-4">
           {recommendations.length === 0 && (
             <div className="bg-white p-6 rounded-xl shadow-sm text-center text-gray-500">
@@ -34,7 +50,7 @@ export default function Result() {
                 {rec.title} <span className="text-gray-400">({rec.year})</span>
               </h3>
 
-              <p className="text-gray-600 text-sm mt-2 leading-relaxed">
+              <p className="text-gray-500 text-xs mt-2 leading-relaxed">
                 {rec.reason}
               </p>
             </div>
