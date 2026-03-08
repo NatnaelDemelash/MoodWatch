@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Loader2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -10,19 +10,28 @@ export default function Detail() {
   const searchParams = useSearchParams();
   const mood = searchParams.get('mood');
   const [moodDescribe, setMoodDescribe] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
-    const res = await fetch('/api/recommend', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mood: mood, description: moodDescribe }),
-    });
-    const data = await res.json();
-    localStorage.setItem(
-      'recommendations',
-      JSON.stringify(data.recommendations),
-    );
-    router.push('/result');
+    setIsLoading(true);
+
+    try {
+      const res = await fetch('/api/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood: mood, description: moodDescribe }),
+      });
+
+      const data = await res.json();
+      localStorage.setItem(
+        'recommendations',
+        JSON.stringify(data.recommendations),
+      );
+      router.push('/result');
+    } catch (error) {
+      console.error('Error:', error);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -73,6 +82,7 @@ export default function Detail() {
             placeholder="Write about what's making you feel this way... (e.g., 'I just finished a big project and feel relieved but also a bit empty')"
             rows={6}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 focus:border-transparent transition-shadow resize-none"
+            disabled={isLoading}
           />
           <p className="text-right text-xs text-gray-400 dark:text-gray-500">
             {moodDescribe.length} characters
@@ -83,22 +93,31 @@ export default function Detail() {
         <div className="text-center">
           <button
             onClick={handleSubmit}
-            disabled={!moodDescribe.trim()}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 disabled:hover:bg-gray-900 dark:disabled:hover:bg-white shadow-sm hover:shadow"
+            disabled={!moodDescribe.trim() || isLoading}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 disabled:hover:bg-gray-900 dark:disabled:hover:bg-white shadow-sm hover:shadow min-w-[140px]"
           >
-            Find my films
-            <ArrowRight className="w-4 h-4" />
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              <>
+                Find my films
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
           </button>
 
-          {!moodDescribe.trim() && (
+          {!moodDescribe.trim() && !isLoading && (
             <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">
               Share a few words to get started
             </p>
           )}
         </div>
 
-        {/* Example prompts (optional) */}
-        {!moodDescribe && (
+        {/* Example prompts */}
+        {!moodDescribe && !isLoading && (
           <div className="mt-8 text-center">
             <p className="text-xs text-gray-400 dark:text-gray-500 mb-2">
               Try something like:
