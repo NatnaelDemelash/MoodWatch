@@ -42,8 +42,9 @@ export async function POST(request: Request) {
     ],
   });
 
-  const parsed = JSON.parse(completion.choices[0].message.content ?? '[]');
-  console.log('Parsed Recommendations:', parsed);
+  const content = completion.choices[0].message.content ?? '[]';
+  const jsonMatch = content.match(/\[[\s\S]*\]/);
+  const parsed = JSON.parse(jsonMatch ? jsonMatch[0] : '[]');
 
   return Response.json({
     recommendations: parsed,
